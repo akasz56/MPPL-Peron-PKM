@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('avatar')->default('http://www.gravatar.com/avatar/?d=mp');
-            $table->string('full_name');
+            $table->string('name');
             $table->string('NIM');
             $table->foreignId('faculty_id');
             $table->foreignId('department_id');

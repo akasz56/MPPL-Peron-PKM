@@ -40,7 +40,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'full_name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'nim' => ['required', 'string', 'max:255'],
             'faculty_id' => ['required'],
             'department_id' => ['required'],
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'username' => $request->username,
-            'full_name' => $request->full_name,
+            'name' => $request->name,
             'NIM' => $request->nim,
             'faculty_id' => $request->faculty_id,
             'department_id' => $request->department_id,

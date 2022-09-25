@@ -20,11 +20,11 @@
                     required autofocus />
             </div>
 
-            <!-- Full Name -->
+            <!-- Name -->
             <div class="mt-4">
-                <x-input-label for="full_name" :value="__('Full Name')" />
+                <x-input-label for="name" :value="__('Full Name')" />
 
-                <x-text-input id="full_name" class="block mt-1 w-full" type="text" name="full_name" :value="old('full_name')"
+                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
                     required />
             </div>
 
