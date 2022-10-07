@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Creator;
 use App\Models\Department;
+use App\Models\Developer;
 use App\Models\Faculty;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -11,6 +13,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -44,6 +47,7 @@ class RegisteredUserController extends Controller
             'nim' => ['required', 'string', 'max:255'],
             'faculty_id' => ['required'],
             'department_id' => ['required'],
+            'role' => ['required', Rule::in(['creator', 'developer'])],
         ]);
 
         $user = User::create([
@@ -55,6 +59,15 @@ class RegisteredUserController extends Controller
             'faculty_id' => $request->faculty_id,
             'department_id' => $request->department_id,
         ]);
+
+        $role = null;
+        if ($request->role == "creator") {
+            $role = Creator::create(['user_id' => $user->id]);
+        } else if ($request->role == "developer") {
+            $role = Developer::create(['user_id' => $user->id]);
+        } else {
+            dd("Detected Error during creating role");
+        }
 
         event(new Registered($user));
 

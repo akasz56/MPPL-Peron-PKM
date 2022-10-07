@@ -77,6 +77,22 @@
                     name="password_confirmation" required />
             </div>
 
+            <!-- Choose Role -->
+            <div class="mt-4">
+                <x-input-label :value="__('Saya Sebagai')" />
+
+                <div class="flex">
+                    <div class="flex-1">
+                        <input type="radio" id="role-creator" name="role" value="creator">
+                        <label for="role-creator">Creator</label>
+                    </div>
+                    <div class="flex-1">
+                        <input type="radio" id="role-developer" name="role" value="developer">
+                        <label for="role-developer">Developer</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
