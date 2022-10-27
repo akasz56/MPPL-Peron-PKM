@@ -16,10 +16,9 @@ return new class extends Migration
         Schema::create('vacancies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('title_desc');
-            $table->text('requirement_desc');
-            $table->foreignId('creator_id');
-            $table->foreignId('period_id');
+            $table->text('desc');
+            $table->text('requirement');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

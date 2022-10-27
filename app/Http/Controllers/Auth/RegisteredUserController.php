@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\Variables;
 use App\Http\Controllers\Controller;
-use App\Models\Creator;
 use App\Models\Department;
-use App\Models\Developer;
 use App\Models\Faculty;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -47,27 +46,18 @@ class RegisteredUserController extends Controller
             'nim' => ['required', 'string', 'max:255'],
             'faculty_id' => ['required'],
             'department_id' => ['required'],
-            'role' => ['required', Rule::in(['creator', 'developer'])],
+            'role' => ['required', Rule::in([Variables::ROLE_CREATOR, Variables::ROLE_DEVELOPER])],
         ]);
 
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'username' => $request->username,
             'name' => $request->name,
             'NIM' => $request->nim,
+            'role' => $request->role,
             'faculty_id' => $request->faculty_id,
             'department_id' => $request->department_id,
         ]);
-
-        $role = null;
-        if ($request->role == "creator") {
-            $role = Creator::create(['user_id' => $user->id]);
-        } else if ($request->role == "developer") {
-            $role = Developer::create(['user_id' => $user->id]);
-        } else {
-            dd("Detected Error during creating role");
-        }
 
         event(new Registered($user));
 

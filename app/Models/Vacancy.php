@@ -16,30 +16,24 @@ class Vacancy extends Model
      */
     protected $fillable = [
         'title',
-        'title_desc',
-        'requirement_desc',
-        'creator_id',
-        'period_id',
+        'desc',
+        'requirement',
+        'user_id',
     ];
 
     public function author()
     {
-        return $this->belongsTo(Creator::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function member()
+    public function members()
     {
-        return $this->hasMany(Developer::class);
+        return $this->hasMany(User::class);
     }
 
     public function requests()
     {
         return $this->hasMany(Request::class);
-    }
-
-    public function period()
-    {
-        return $this->belongsTo(Period::class);
     }
 
     public function keywords()

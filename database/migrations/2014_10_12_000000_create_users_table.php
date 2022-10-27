@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('avatar')->default('http://www.gravatar.com/avatar/?d=mp');
             $table->string('name');
             $table->string('NIM');
+            $table->string('role');
             $table->foreignId('faculty_id');
             $table->foreignId('department_id');
             $table->timestamps();

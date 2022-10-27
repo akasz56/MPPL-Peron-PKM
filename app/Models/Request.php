@@ -15,7 +15,9 @@ class Request extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'developer_id',
+        'status',
+        'user_id',
+        'vacancy_id',
     ];
 
     public function vacancy()

@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
-            $table->foreignId('developer_id');
-            $table->foreignId('vacany_id');
+            $table->integer('status');
+            $table->foreignId('user_id');
+            $table->foreignId('vacancy_id');
             $table->timestamps();
         });
     }

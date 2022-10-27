@@ -3,10 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Helpers\Variables;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+use function PHPUnit\Framework\isEmpty;
 
 class User extends Authenticatable
 {
@@ -23,6 +27,7 @@ class User extends Authenticatable
         'avatar',
         'name',
         'NIM',
+        'role',
         'faculty_id',
         'department_id',
     ];
@@ -54,5 +59,33 @@ class User extends Authenticatable
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function isCreator()
+    {
+        return $this->role == Variables::ROLE_CREATOR;
+    }
+
+    public function isDeveloper()
+    {
+        return $this->role == Variables::ROLE_DEVELOPER;
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+
+    public function vacancies()
+    {
+        return $this->hasMany(Vacancy::class);
+    }
+
+    public function hasRequested($vacancy_id)
+    {
+        return $this->requests()
+            ->where('vacancy_id', $vacancy_id)
+            ->get()
+            ->isNotEmpty();
     }
 }
