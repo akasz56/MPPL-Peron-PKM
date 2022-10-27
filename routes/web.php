@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,19 @@ Route::prefix('vacancies')->name('vacancies.')->group(function () {
         Route::post('/create', [VacancyController::class, 'store'])->name('post-create');
         Route::post('/edit', [VacancyController::class, 'update'])->name('update');
         Route::post('/delete/{id}', [VacancyController::class, 'destroy'])->name('delete');
+    });
+});
+
+Route::prefix('requests')->name('requests.')->group(function () {
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/', [RequestController::class, 'index'])->name('index');
+        Route::get('/{id}', [RequestController::class, 'details'])->name('details');
+    });
+
+    Route::middleware(['auth', 'developer'])->group(function () {
+        Route::post('/create', [RequestController::class, 'store'])->name('create');
+        Route::post('/edit', [RequestController::class, 'update'])->name('update');
+        Route::post('/delete', [RequestController::class, 'destroy'])->name('delete');
     });
 });
 
