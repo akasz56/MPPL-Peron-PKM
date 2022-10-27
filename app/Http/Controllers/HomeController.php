@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Variables;
-use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\User;
 use App\Models\Vacancy;
@@ -15,6 +14,12 @@ class HomeController extends Controller
     public function welcome()
     {
         return view('welcome');
+    }
+
+    public function index()
+    {
+        $data = Vacancy::with('author')->get();
+        return view('index', compact('data'));
     }
 
     public function dashboard()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VacancyController extends Controller
 {
@@ -14,7 +15,7 @@ class VacancyController extends Controller
      */
     public function index()
     {
-        //
+        return view('vacancies.index');
     }
 
     /**
@@ -24,7 +25,7 @@ class VacancyController extends Controller
      */
     public function create()
     {
-        //
+        return view('vacancies.create');
     }
 
     /**
@@ -35,7 +36,20 @@ class VacancyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'desc' => ['required', 'string'],
+            'requirement' => ['required', 'string'],
+        ]);
+
+        $vacancy = Vacancy::create([
+            'title' => $request->title,
+            'desc' => $request->desc,
+            'requirement' => $request->requirement,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        return redirect(route('vacancies.details', $vacancy->id));
     }
 
     /**
@@ -44,9 +58,10 @@ class VacancyController extends Controller
      * @param  \App\Models\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function show(Vacancy $vacancy)
+    public function details($id)
     {
-        //
+        $vacancy = Vacancy::with('author')->findOrFail($id);
+        return view('vacancies.details', compact('vacancy'));
     }
 
     /**
@@ -55,9 +70,10 @@ class VacancyController extends Controller
      * @param  \App\Models\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vacancy $vacancy)
+    public function edit($id)
     {
-        //
+        $vacancy = Vacancy::findOrFail($id);
+        return view('vacancies.edit', compact('vacancy'));
     }
 
     /**
@@ -67,9 +83,23 @@ class VacancyController extends Controller
      * @param  \App\Models\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vacancy $vacancy)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'title' => ['required', 'string'],
+            'desc' => ['required', 'string'],
+            'requirement' => ['required', 'string'],
+        ]);
+
+        $id = $request->id;
+        $vacancy = Vacancy::findOrFail($id);
+        $vacancy->title = $request->title;
+        $vacancy->desc = $request->desc;
+        $vacancy->requirement = $request->requirement;
+        $vacancy->save();
+
+        return redirect(route('vacancies.details', $id))->with('successAlert', 'Lowongan berhasil diedit');
     }
 
     /**
@@ -78,8 +108,14 @@ class VacancyController extends Controller
      * @param  \App\Models\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vacancy $vacancy)
+    public function destroy($id)
     {
-        //
+        $model = Vacancy::findOrFail($id);
+        if (count($model->requests) > 0) {
+            return back()->withErrors('Lowongan tidak bisa dihapus karena sudah terdapat pengajuan bergabung');
+        }
+        $model->delete();
+
+        return redirect(route('dashboard'));
     }
 }
