@@ -17,7 +17,7 @@
 
             <!-- Email Address -->
             <div>
-                <x-input-label for="email" :value="__('Email')" />
+                <x-input-label for="email" :value="'Email'" />
 
                 <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
                     required autofocus />
@@ -26,14 +26,10 @@
             <!-- Password -->
             <div class="mt-4">
                 <label for="password" class="flex font-medium text-sm text-gray-700">
-                    <span class="flex-1">
-                        {{ __('Password') }}
-                    </span>
+                    <span class="flex-1">Password</span>
 
                     @if (Route::has('password.request'))
-                        <a class="underline" href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
-                        </a>
+                        <a class="underline" href="{{ route('password.request') }}">Lupa Password</a>
                     @endif
                 </label>
 
@@ -47,19 +43,19 @@
                     <input id="remember_me" type="checkbox"
                         class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                    <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                 </label>
             </div>
 
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('register'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
-                        {{ __('Belum punya akun?') }}
+                        Belum punya akun?
                     </a>
                 @endif
 
                 <x-primary-button class="ml-3">
-                    {{ __('Log in') }}
+                    Masuk
                 </x-primary-button>
             </div>
         </form>
