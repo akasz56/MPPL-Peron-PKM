@@ -1,7 +1,7 @@
 @props(['vacancy'])
 
 <a href="{{ route('vacancies.details', $vacancy->id) }}"
-    class="p-6 mb-4 w-96 bg-white rounded-lg border border-gray-300 hover:bg-gray-100">
+    class="p-6 mb-2 mr-1 w-96 bg-white rounded-lg border border-gray-300 hover:bg-gray-100">
     <h5 class="mb-2 text-2xl font-bold text-gray-900">{{ $vacancy->title }}</h5>
     <p class="mb-3 font-normal text-gray-700">{!! Str::limit($vacancy->desc, 150) !!}</p>
     <div class="flex items-center space-x-4">
