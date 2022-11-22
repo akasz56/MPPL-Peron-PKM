@@ -13,9 +13,11 @@
                 </div>
             </div>
             <div id="searchbox" class="flex flex-1 px-4 items-center">
-                <div class="w-full">
-                    <x-text-input type="text" class="w-full text-center" name="search" placeholder="Search Here" />
-                </div>
+                <form class="w-full" method="POST" action="{{ route('search') }}">
+                    @csrf
+                    <x-text-input type="text" class="w-full text-center" name="searchQuery"
+                        placeholder="Search Here" />
+                </form>
             </div>
             <div id="dropdown" class="hidden sm:flex sm:items-center">
                 <x-dropdown align="right" width="48">
@@ -55,30 +57,29 @@
             </div>
 
         </div>
-    </div>
 
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div id="nav-links" class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">Lowongan</x-responsive-nav-link>
-        </div>
-
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <img class="w-8 h-8 rounded-full" src="{!! Auth::user()->avatar !!}">
-                <p class="font-bold">{{ Auth::user()->name }}</p>
-                <p class="text-sm text-gray-500">{{ ucwords(Auth::user()->role) }}</p>
+        <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+            <div id="nav-links" class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">Lowongan</x-responsive-nav-link>
             </div>
 
-            <div class="mt-3 space-y-1">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();this.closest('form').submit();">
-                        Keluar
-                    </x-responsive-nav-link>
-                </form>
+            <div class="pt-4 pb-1 border-t border-gray-200">
+                <div class="px-4">
+                    <img class="w-8 h-8 rounded-full" src="{!! Auth::user()->avatar !!}">
+                    <p class="font-bold">{{ Auth::user()->name }}</p>
+                    <p class="text-sm text-gray-500">{{ ucwords(Auth::user()->role) }}</p>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();this.closest('form').submit();">
+                            Keluar
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 </nav>
