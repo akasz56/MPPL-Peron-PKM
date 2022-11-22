@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Variables;
-use App\Models\Faculty;
 use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
@@ -27,13 +25,25 @@ class HomeController extends Controller
         $user = User::find(Auth::user()->id);
 
         if ($user->isCreator()) {
-            $vacancies = $user->vacancies;
-            return view('dashboard-creator', compact('user', 'vacancies'));
+            $vacancies = $user
+                ->vacancies
+                ->sortByDesc('created_at');
+            $waitingRequestsToCreator = $this
+                ->getWaitingRequestsToCreator($user->id)
+                ->sortByDesc('created_at');
+
+            return view('dashboard-creator', compact('user', 'vacancies', 'waitingRequestsToCreator'));
         } else if ($user->isDeveloper()) {
-            $requests = $user->requests;
-            $accepted_requests = $user->requests->where('status', Variables::REQUEST_STATUS_ACCEPTED);
+            $requests = $user
+                ->requests
+                ->sortBy('status');
+            $accepted_requests = $user
+                ->acceptedRequests()
+                ->sortByDesc('updated_at');
+
             return view('dashboard-developer', compact('user', 'requests', 'accepted_requests'));
         }
+
         return redirect(route('logout'));
     }
 }
