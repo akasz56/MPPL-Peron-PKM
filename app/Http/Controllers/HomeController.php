@@ -46,4 +46,36 @@ class HomeController extends Controller
 
         return redirect(route('logout'));
     }
+
+    public function search(Request $request)
+    {
+        $searchQuery = $request->searchQuery;
+
+        // $all = DB::table('vacancies as v')
+        //     ->join('users as u', 'v.user_id', '=', 'u.id')
+        //     ->join('faculties as f', 'u.faculty_id', '=', 'f.id')
+        //     ->join('departments as d', 'u.department_id', '=', 'd.id')
+        //     ->select([
+        //         'v.title',
+        //         'v.desc',
+        //         'v.requirement',
+        //         'u.name as creator_name',
+        //         'u.email as creator_email',
+        //         'u.NIM as creator_NIM',
+        //         'f.name as creator_faculty',
+        //         'd.name as creator_department',
+        //     ])->get();
+
+        $data = Vacancy::with(['author', 'author.faculty', 'author.department'])
+            ->where('title', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhere('desc', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhere('requirement', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhereRelation('author', 'name', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhereRelation('author', 'email', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhereRelation('author.faculty', 'name', 'LIKE', '%' . $searchQuery . '%')
+            ->orWhereRelation('author.department', 'name', 'LIKE', '%' . $searchQuery . '%')
+            ->get();
+
+        return view('search-result', compact('data', 'searchQuery'));
+    }
 }
