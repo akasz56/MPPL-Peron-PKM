@@ -57,8 +57,7 @@ Route::prefix('requests')->name('requests.')->group(function () {
 
     Route::middleware(['auth', 'developer'])->group(function () {
         Route::post('/create', [RequestController::class, 'store'])->name('create');
-        Route::post('/edit', [RequestController::class, 'update'])->name('update');
-        Route::post('/delete', [RequestController::class, 'destroy'])->name('delete');
+        Route::post('/delete/{id}', [RequestController::class, 'destroy'])->name('delete');
     });
 });
 
