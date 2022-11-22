@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Variables;
 use App\Models\Request as RequestModel;
+use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,17 +18,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('requests.index');
     }
 
     /**
@@ -55,7 +46,7 @@ class RequestController extends Controller
 
         if ($exists->isNotEmpty()) {
             return back()->withErrors('Pengajuan bergabung sudah pernah dikirim');
-    }
+        }
 
         $requestModel = RequestModel::create([
             'status' => Variables::REQUEST_STATUS_PENDING,
@@ -63,7 +54,7 @@ class RequestController extends Controller
             'vacancy_id' => $vacancy->id,
         ]);
 
-        return back()->with('successAlert', 'Pengajuan bergabung berhasil dikirim');
+        return redirect(route('requests.details', ['id' => $requestModel->id]))->with('successAlert', 'Pengajuan bergabung berhasil dikirim');
     }
 
     /**
@@ -72,10 +63,10 @@ class RequestController extends Controller
      * @param  \App\Models\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function details(RequestModel $requestModel)
+    public function details($id)
     {
-        // $requestObject find
-        // return view('requests.details', compact('requestObject'));
+        $data = RequestModel::with(['author', 'vacancy'])->findOrFail($id);
+        return view('requests.details', compact('data'));
     }
 
     /**
@@ -85,9 +76,19 @@ class RequestController extends Controller
      * @param  \App\Models\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RequestModel $requestModel)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'status' => ['required', 'numeric'],
+        ]);
+
+        $id = $request->id;
+        $model = RequestModel::findOrFail($id);
+        $model->fill($request->all());
+        $model->save();
+
+        return redirect(route('requests.details', $id))->with('successAlert', 'Status pengajuan berhasil diubah');
     }
 
     /**
@@ -96,14 +97,26 @@ class RequestController extends Controller
      * @param  \App\Models\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RequestModel $requestModel)
+    public function destroy($id)
     {
-        // $requestObject find
-        // if $requestObject count > 0
-        // then back withErrors
-        // else
-        // $requestObject delete
+        $model = RequestModel::findOrFail($id);
+        if ($model->status > Variables::REQUEST_STATUS_PENDING) {
+            return back()->withErrors('Pengajuan tidak bisa dihapus');
+        }
+        $model->delete();
 
-        // return redirect(route('dashboard'));
+        return redirect(route('dashboard'))->with('successAlert', 'Pengajuan berhasil dibatalkan');
+    }
+
+    public function findMyRequest(Request $request)
+    {
+        $user_id = $request->query('user');
+        $vacancy_id = $request->query('vacancy');
+
+        $data = RequestModel::where('user_id', $user_id)
+            ->where('vacancy_id', $vacancy_id)
+            ->first();
+
+        return redirect(route('requests.details', $data->id));
     }
 }

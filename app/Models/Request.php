@@ -27,6 +27,6 @@ class Request extends Model
 
     public function author()
     {
-        return $this->belongsTo(Developer::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

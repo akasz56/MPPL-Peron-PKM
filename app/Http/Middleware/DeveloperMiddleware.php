@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Helpers\Variables;
-use App\Models\Developer;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

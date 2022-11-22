@@ -47,7 +47,12 @@ Route::prefix('vacancies')->name('vacancies.')->group(function () {
 Route::prefix('requests')->name('requests.')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/', [RequestController::class, 'index'])->name('index');
-        Route::get('/{id}', [RequestController::class, 'details'])->name('details');
+        Route::get('/details/{id}', [RequestController::class, 'details'])->name('details');
+        Route::get('/request-redirect', [RequestController::class, 'findMyRequest'])->name('request-redirect');
+    });
+
+    Route::middleware(['auth', 'creator'])->group(function () {
+        Route::post('/edit', [RequestController::class, 'update'])->name('update');
     });
 
     Route::middleware(['auth', 'developer'])->group(function () {
