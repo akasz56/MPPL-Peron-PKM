@@ -18,13 +18,14 @@ class VacancyFactory extends Factory
      */
     public function definition()
     {
-        $u = User::where('role', Variables::ROLE_CREATOR)->count();
+        $u = User::where('role', Variables::ROLE_CREATOR)->get('id')->random();
+        $user_id = $u->id;
 
         return [
             'title' => fake()->words(rand(1, 3), true),
             'desc' => fake()->paragraph(rand(1, 5), true),
             'requirement' => fake()->paragraph(rand(1, 2), true),
-            'user_id' => rand(0, $u) + 1,
+            'user_id' => $user_id,
         ];
     }
 }
