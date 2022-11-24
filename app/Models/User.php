@@ -88,4 +88,11 @@ class User extends Authenticatable
             ->get()
             ->isNotEmpty();
     }
+
+    public function acceptedRequests()
+    {
+        return $this->requests()
+            ->where('status', Variables::REQUEST_STATUS_ACCEPTED)
+            ->get();
+    }
 }
