@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Faculty;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,8 +18,8 @@ class UserController extends Controller
      */
     public function details($id)
     {
-        $user = User::find($id);
-        return $user;
+        $data = User::findOrFail($id);
+        return view('user.details', compact('data'));
     }
 
     /**
@@ -25,9 +28,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+        $faculties = Faculty::all();
+        $departments = Department::all();
+        return view('user.edit', compact('user', 'faculties', 'departments'));
     }
 
     /**

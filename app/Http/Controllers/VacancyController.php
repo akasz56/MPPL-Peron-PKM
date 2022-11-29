@@ -94,9 +94,7 @@ class VacancyController extends Controller
 
         $id = $request->id;
         $vacancy = Vacancy::findOrFail($id);
-        $vacancy->title = $request->title;
-        $vacancy->desc = $request->desc;
-        $vacancy->requirement = $request->requirement;
+        $vacancy->fill($request->all());
         $vacancy->save();
 
         return redirect(route('vacancies.details', $id))->with('successAlert', 'Lowongan berhasil diedit');
