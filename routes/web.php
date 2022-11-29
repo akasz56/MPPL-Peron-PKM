@@ -18,21 +18,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
-Route::get('index', [HomeController::class, 'index'])->name('index');
+Route::get('/index', [HomeController::class, 'index'])->name('index');
+Route::post('/search', [HomeController::class, 'search'])->name('search');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/{id}', [UserController::class, 'details'])->name('details');
+        Route::get('/details/{id}', [UserController::class, 'details'])->name('details');
+        Route::get('/edit', [UserController::class, 'edit'])->name('edit');
+        Route::post('/update', [UserController::class, 'update'])->name('update');
     });
 });
 
 Route::prefix('vacancies')->name('vacancies.')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/', [VacancyController::class, 'index'])->name('index');
-        Route::get('/{id}', [VacancyController::class, 'details'])->name('details');
+        Route::get('/details/{id}', [VacancyController::class, 'details'])->name('details');
     });
 
     Route::middleware(['auth', 'creator'])->group(function () {
