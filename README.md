@@ -43,6 +43,13 @@
 
 ## Kebutuhan sistem (user, fitur utama, lingkungan pengembangan)
 
+- User Merupakan Mahasiswa IPB, terbagi menjadi 2 role yaitu Creator dan Developer
+- Perangkat lunak berbentuk web app
+- Creator yang memiliki ide topik PKM dan mencari anggota
+- Developer yang mengajukan diri sebagai calon anggota
+- Perangkat lunak menggunakan web framework laravel
+- Database menggunakan MySQL
+
 ## Risiko
 
 | Risiko                 | Deskripsi                                                                                                    | Upaya yang dilakukan                                                                                                   |
@@ -68,14 +75,20 @@ Agile Sprint
 
 ## Link video demo
 
+```
+https://youtu.be/1HDXLJ-2bvc
+```
+
 ## Link sheet test case
 
-- (dah ada hasil testingnya)
+```
+https://docs.google.com/spreadsheets/d/1-9XNLDWr82lsl93xOnef_VMh68qnR9DzaP5HhJr5n5I/edit#gid=0
+```
 
 ## Link deploy
 
 ```
-https://peron-pkm.000webhostapp.com/
+http://amoranesia.com/
 ```
 
 ## Link figma
@@ -85,6 +98,9 @@ https://www.figma.com/file/Hr6N6XypkZZ1qXHYbFgmns/PeronPKM-MPPL?node-id=424%3A98
 ```
 
 ## Kendala
+
+- Kekurangan waktu pengembangan perangkat lunak
+- Kendala Hosting pada tahap deploy
 
 ## Installation
 
